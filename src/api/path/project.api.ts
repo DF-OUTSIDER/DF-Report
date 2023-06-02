@@ -46,13 +46,12 @@ export const fetchProjectApi = async (data: object) => {
   }
 }
 
-// * 保存项目
+// * 保存项目 , ContentTypeEnum.FORM_URLENCODED
 export const saveProjectApi = async (data: object) => {
   try {
     const res = await http(RequestHttpEnum.POST)(
       `${ModuleTypeEnum.GOVIEW_PROJECT}/save`,
-      data,
-      ContentTypeEnum.FORM_URLENCODED
+      data
     )
     return res
   } catch {
