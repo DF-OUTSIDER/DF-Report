@@ -1,3 +1,11 @@
+<!--
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\views\login\index.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <template>
   <!-- 登录 -->
   <div class="go-login-box">
@@ -132,6 +140,7 @@ import { StorageEnum } from '@/enums/storageEnum'
 import { icon } from '@/plugins'
 import { routerTurnByName } from '@/utils'
 import { loginApi } from '@/api/path'
+import { Oauth2TokenType } from '@/api/common/type'
 
 interface FormState {
   username: string
@@ -212,16 +221,21 @@ const handleSubmit = async (e: Event) => {
         password
       })
       if(res && res.data) {
-        const { tokenValue, tokenName } = res.data.token
-        const { nickname, username, id } = res.data.userinfo
+        const data = res.data as unknown as Oauth2TokenType
+        const tokenValue = data.accessToken
+        // http 请求头 token名
+        const tokenName = 'Authorization'
+        const userId = data.userId
+
+        //const { nickname, username, id } = res.data.userinfo
 
         // 存储到 pinia 
         systemStore.setItem(SystemStoreEnum.USER_INFO, {
           [SystemStoreUserInfoEnum.USER_TOKEN]: tokenValue,
           [SystemStoreUserInfoEnum.TOKEN_NAME]: tokenName,
-          [SystemStoreUserInfoEnum.USER_ID]: id,
+          [SystemStoreUserInfoEnum.USER_ID]: userId,
           [SystemStoreUserInfoEnum.USER_NAME]: username,
-          [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
+          //[SystemStoreUserInfoEnum.NICK_NAME]: nickname,
           t
         })
         

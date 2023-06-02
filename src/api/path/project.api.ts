@@ -1,3 +1,11 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\api\path\project.api.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { http } from '@/api/http'
 import { httpErrorHandle } from '@/utils'
 import { ContentTypeEnum, RequestHttpEnum, ModuleTypeEnum } from '@/enums/httpEnum'
@@ -6,7 +14,7 @@ import { ProjectItem, ProjectDetail } from './project'
 // * 项目列表
 export const projectListApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.GET)<ProjectItem[]>(`${ModuleTypeEnum.PROJECT}/list`, data)
+    const res = await http(RequestHttpEnum.GET)(`${ModuleTypeEnum.GOVIEW_PROJECT}/list`, data)
     return res
   } catch {
     httpErrorHandle()
@@ -21,7 +29,7 @@ export const createProjectApi = async (data: object) => {
        * 项目id
        */
       id: number
-    }>(`${ModuleTypeEnum.PROJECT}/create`, data)
+    }>(`${ModuleTypeEnum.GOVIEW_PROJECT}/create`, data)
     return res
   } catch {
     httpErrorHandle()
@@ -31,7 +39,7 @@ export const createProjectApi = async (data: object) => {
 // * 获取项目
 export const fetchProjectApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.GET)<ProjectDetail>(`${ModuleTypeEnum.PROJECT}/getData`, data)
+    const res = await http(RequestHttpEnum.GET)<ProjectDetail>(`${ModuleTypeEnum.GOVIEW_PROJECT}/detail`, data)
     return res
   } catch {
     httpErrorHandle()
@@ -42,7 +50,7 @@ export const fetchProjectApi = async (data: object) => {
 export const saveProjectApi = async (data: object) => {
   try {
     const res = await http(RequestHttpEnum.POST)(
-      `${ModuleTypeEnum.PROJECT}/save/data`,
+      `${ModuleTypeEnum.GOVIEW_PROJECT}/save`,
       data,
       ContentTypeEnum.FORM_URLENCODED
     )
@@ -55,7 +63,7 @@ export const saveProjectApi = async (data: object) => {
 // * 修改项目基础信息
 export const updateProjectApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.PROJECT}/edit`, data)
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.GOVIEW_PROJECT}/save`, data)
     return res
   } catch {
     httpErrorHandle()
@@ -65,7 +73,7 @@ export const updateProjectApi = async (data: object) => {
 // * 删除项目
 export const deleteProjectApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.DELETE)(`${ModuleTypeEnum.PROJECT}/delete`, data)
+    const res = await http(RequestHttpEnum.DELETE)(`${ModuleTypeEnum.GOVIEW_PROJECT}/delete`, data)
     return res
   } catch {
     httpErrorHandle()
@@ -75,7 +83,7 @@ export const deleteProjectApi = async (data: object) => {
 // * 修改发布状态 [-1未发布,1发布]
 export const changeProjectReleaseApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.PUT)(`${ModuleTypeEnum.PROJECT}/publish`, data)
+    const res = await http(RequestHttpEnum.PUT)(`${ModuleTypeEnum.GOVIEW_PROJECT}/publish`, data)
     return res
   } catch {
     httpErrorHandle()
@@ -91,7 +99,7 @@ export const uploadFile = async (data: object) => {
        */
       fileName: string,
       fileurl: string,
-    }>(`${ModuleTypeEnum.PROJECT}/upload`, data, ContentTypeEnum.FORM_DATA)
+    }>(`${ModuleTypeEnum.GOVIEW_PROJECT}/upload`, data, ContentTypeEnum.FORM_DATA)
     return res
   } catch {
     httpErrorHandle()

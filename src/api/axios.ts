@@ -1,3 +1,11 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\api\axios.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import axios, { AxiosResponse, AxiosRequestConfig, Axios, AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { RequestHttpHeaderEnum, ResultEnum, ModuleTypeEnum } from '@/enums/httpEnum'
 import { PageEnum, ErrorPageNameMap } from '@/enums/pageEnum'
@@ -20,7 +28,7 @@ export interface MyRequestInstance extends Axios {
 
 const axiosInstance = axios.create({
   baseURL: `${import.meta.env.PROD ? import.meta.env.VITE_PRO_PATH : ''}${axiosPre}`,
-  timeout: ResultEnum.TIMEOUT
+  timeout: ResultEnum.TIMEOUT as number
 }) as unknown as MyRequestInstance
 
 axiosInstance.interceptors.request.use(
@@ -35,7 +43,7 @@ axiosInstance.interceptors.request.use(
       return config
     }
     const userInfo = info[SystemStoreEnum.USER_INFO]
-    config.headers[userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token'] =  userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
+    config.headers[userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token'] =  'Bearer ' + userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
     return config
   },
   (err: AxiosError) => {
@@ -50,7 +58,7 @@ axiosInstance.interceptors.response.use(
     if (isPreview()) {
       return Promise.resolve(res.data)
     }
-    const { code } = res.data as { code: number }
+    const { code } = res.data as { code: number | string }
 
     if (code === undefined || code === null) return Promise.resolve(res.data)
 
@@ -67,8 +75,8 @@ axiosInstance.interceptors.response.use(
     }
 
     // 固定错误码重定向
-    if (ErrorPageNameMap.get(code)) {
-      redirectErrorPage(code)
+    if (ErrorPageNameMap.get(code as number)) {
+      redirectErrorPage(code as number)
       return Promise.resolve(res.data)
     }
 

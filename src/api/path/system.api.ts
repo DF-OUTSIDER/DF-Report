@@ -24,7 +24,7 @@ export const loginApi = async (data: object) => {
 // * 登出
 export const logoutApi = async () => {
   try {
-    const res = await http(RequestHttpEnum.GET)(`${ModuleTypeEnum.SYSTEM}/logout`)
+    const res = await http(RequestHttpEnum.GET)(`${ModuleTypeEnum.AUTH}/loginOut`)
     return res
   } catch (err) {
     httpErrorHandle()
@@ -39,7 +39,7 @@ export const ossUrlApi = async (data: object) => {
        * bucket 地址
        */
       bucketURL?: string
-    }>(`${ModuleTypeEnum.SYSTEM}/getOssInfo`, data)
+    }>(`${ModuleTypeEnum.AUTH}/loginOut`, data)
     return res
   } catch (err) {
     httpErrorHandle()
