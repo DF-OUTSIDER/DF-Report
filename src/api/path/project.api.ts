@@ -72,7 +72,7 @@ export const updateProjectApi = async (data: object) => {
 // * 删除项目
 export const deleteProjectApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.DELETE)(`${ModuleTypeEnum.GOVIEW_PROJECT}/delete`, data)
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.GOVIEW_PROJECT}/delete`, data)
     return res
   } catch {
     httpErrorHandle()

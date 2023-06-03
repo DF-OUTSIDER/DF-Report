@@ -70,7 +70,7 @@ export const useDataListInit = () => {
         new Promise(res => {
           res(
             deleteProjectApi({
-              ids: cardData.id
+              ids: [cardData.id]
             })
           )
         }),
