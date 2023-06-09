@@ -3,6 +3,7 @@ export enum ModuleTypeEnum {
   AUTH = 'auth',
   SYSTEM = 'sys',
   GOVIEW_PROJECT = 'goViewProject',
+  UPLOAD_FILE = 'uploadFile'
 }
 
 // 请求结果集

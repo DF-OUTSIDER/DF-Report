@@ -98,7 +98,7 @@ export const uploadFile = async (data: object) => {
        */
       fileName: string,
       fileurl: string,
-    }>(`${ModuleTypeEnum.GOVIEW_PROJECT}/upload`, data, ContentTypeEnum.FORM_DATA)
+    }>(`${ModuleTypeEnum.UPLOAD_FILE}/upload`, data, ContentTypeEnum.FORM_DATA)
     return res
   } catch {
     httpErrorHandle()

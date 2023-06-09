@@ -1,3 +1,11 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\api\axios.config.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { ModuleTypeEnum } from '@/enums/httpEnum'
 
 // 接口白名单（免登录）
@@ -7,7 +15,7 @@ export const fetchAllowList = [
   // 获取 OSS 接口
   `${ModuleTypeEnum.SYSTEM}/getOssInfo`,
   // 预览获取数据
-  `${ModuleTypeEnum.PROJECT}/getData`,
+  `${ModuleTypeEnum.GOVIEW_PROJECT}/getData`,
 ]
 
 // 接口黑名单

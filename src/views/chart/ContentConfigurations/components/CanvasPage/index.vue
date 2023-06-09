@@ -277,7 +277,8 @@ const customRequest = (options: UploadCustomRequestOptions) => {
         type: file.file.type
       })
       let uploadParams = new FormData()
-      uploadParams.append('object', newNameFile)
+      uploadParams.append('fileStream', newNameFile)
+      uploadParams.append('storageCode', 'local')
       const uploadRes = await uploadFile(uploadParams)
 
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
