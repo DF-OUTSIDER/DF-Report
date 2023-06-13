@@ -1,3 +1,11 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\api\path\project.d.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 export type ProjectItem = {
   /**
    * 项目 id
@@ -6,7 +14,7 @@ export type ProjectItem = {
   /**
    * 项目名称
    */
-  projectName: string
+  name: string
   /**
    * 项目状态:\
    * -1: 未发布\
@@ -18,9 +26,10 @@ export type ProjectItem = {
    */
   createTime: string
   /**
-   * 预览图片url
+   * 预览图片UUID码
    */
-  indexImage: string
+  preview: string
+  previewAddress: string
   /**
    * 创建者 id
    */

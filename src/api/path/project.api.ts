@@ -92,7 +92,11 @@ export const changeProjectReleaseApi = async (data: object) => {
 // * 上传文件
 export const uploadFile = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.POST)<{name:string, url: string}>(`${ModuleTypeEnum.UPLOAD_FILE}/upload`, data, ContentTypeEnum.FORM_DATA)
+    const res = await http(RequestHttpEnum.POST)<{
+      code: string,
+      name: string, 
+      url: string
+    }>(`${ModuleTypeEnum.UPLOAD_FILE}/upload`, data, ContentTypeEnum.FORM_DATA)
     return res
   } catch {
     httpErrorHandle()

@@ -13,7 +13,7 @@ import {
 import { PreviewScaleEnum } from '@/enums/styleEnum'
 import type { ChartColorsNameType, CustomColorsType, GlobalThemeJsonType } from '@/settings/chartThemes/index'
 
-// 项目数据枚举
+// todo 项目数据枚举
 export enum ProjectInfoEnum {
   // ID
   PROJECT_ID = "projectId",

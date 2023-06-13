@@ -227,20 +227,21 @@ export const useSync = () => {
    */
   const updateStoreInfo = (projectData: {
     id: string,
-    projectName: string,
-    indexImage: string,
+    name: string,
+    preview: string,
+    previewAddress: string,
     remarks: string,
     state: number
   }) => {
-    const { id, projectName, remarks, indexImage, state } = projectData
+    const { id, name, remarks, preview, previewAddress, state } = projectData
     // ID
     chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_ID, id)
     // 名称
-    chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, projectName)
+    chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, name)
     // 描述
     chartEditStore.setProjectInfo(ProjectInfoEnum.REMARKS, remarks)
     // 缩略图
-    chartEditStore.setProjectInfo(ProjectInfoEnum.THUMBNAIL, indexImage)
+    chartEditStore.setProjectInfo(ProjectInfoEnum.THUMBNAIL, previewAddress)
     // 发布
     chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, state === 1)
   }
@@ -313,7 +314,7 @@ export const useSync = () => {
             // 保存数据
             let params = new FormData()
             params.append('id', projectId)
-            params.append('preview', `${uploadRes.data.url}`)
+            params.append('preview', `${uploadRes.data.code}`)
             params.append('content', JSONStringify(chartEditStore.getStorageInfo || {}))
             const res= await saveProjectApi(params)
 
