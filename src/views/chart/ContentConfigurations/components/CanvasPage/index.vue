@@ -282,17 +282,21 @@ const customRequest = (options: UploadCustomRequestOptions) => {
       const uploadRes = await uploadFile(uploadParams)
 
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
-        if (uploadRes.data.fileurl) {
-          chartEditStore.setEditCanvasConfig(
-            EditCanvasConfigEnum.BACKGROUND_IMAGE,
-            `${uploadRes.data.fileurl}?time=${new Date().getTime()}`
-          )
-        } else {
-          chartEditStore.setEditCanvasConfig(
-            EditCanvasConfigEnum.BACKGROUND_IMAGE,
-            `${systemStore.getFetchInfo.OSSUrl || ''}${uploadRes.data.fileName}?time=${new Date().getTime()}`
-          )
-        }
+        // if (uploadRes.data.fileurl) {
+        //   chartEditStore.setEditCanvasConfig(
+        //     EditCanvasConfigEnum.BACKGROUND_IMAGE,
+        //     `${uploadRes.data.fileurl}?time=${new Date().getTime()}`
+        //   )
+        // } else {
+        //   chartEditStore.setEditCanvasConfig(
+        //     EditCanvasConfigEnum.BACKGROUND_IMAGE,
+        //     `${systemStore.getFetchInfo.OSSUrl || ''}${uploadRes.data.fileName}?time=${new Date().getTime()}`
+        //   )
+        // }
+        chartEditStore.setEditCanvasConfig(
+          EditCanvasConfigEnum.BACKGROUND_IMAGE,
+          uploadRes.data.url
+        )
         chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.SELECT_COLOR, false)
         return
       }

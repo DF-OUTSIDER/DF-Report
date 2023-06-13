@@ -305,38 +305,38 @@ export const useSync = () => {
         const uploadRes = await uploadFile(uploadParams)
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
-          if (uploadRes.data.fileurl) {
-            await updateProjectApi({
-              id: fetchRouteParamsLocation(),
-              indexImage: `${uploadRes.data.fileurl}`
-            })
+          if (uploadRes.data.url) {
+            // await updatePreviewApi({
+            //   id: fetchRouteParamsLocation(),
+            //   preview: `${uploadRes.data.url}`
+            // })
+            // 保存数据
+            let params = new FormData()
+            params.append('id', projectId)
+            params.append('preview', `${uploadRes.data.url}`)
+            params.append('content', JSONStringify(chartEditStore.getStorageInfo || {}))
+            const res= await saveProjectApi(params)
+
+            if (res && res.code === ResultEnum.SUCCESS) {
+              // 成功状态
+              setTimeout(() => {
+                chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
+              }, 1000)
+              return
+            }
+            // 失败状态
+            chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
           } else {
-            await updateProjectApi({
-              id: fetchRouteParamsLocation(),
-              indexImage: `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.fileName}`
-            })
+            // await updateProjectApi({
+            //   id: fetchRouteParamsLocation(),
+            //   preview: `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.name}`
+            // })
           }
         }
       }
     } catch (e) {
       console.log(e)
     }
-
-    // 保存数据
-    let params = new FormData()
-    params.append('id', projectId)
-    params.append('content', JSONStringify(chartEditStore.getStorageInfo || {}))
-    const res= await saveProjectApi(params)
-
-    if (res && res.code === ResultEnum.SUCCESS) {
-      // 成功状态
-      setTimeout(() => {
-        chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
-      }, 1000)
-      return
-    }
-    // 失败状态
-    chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
   }, 3000)
 
   // * 定时处理

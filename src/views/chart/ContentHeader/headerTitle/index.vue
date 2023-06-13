@@ -1,3 +1,11 @@
+<!--
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\views\chart\ContentHeader\headerTitle\index.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <template>
   <n-space>
     <n-icon size="20" :depth="3">
@@ -66,6 +74,7 @@ const handleFocus = () => {
   })
 }
 
+// todo 保存项目名称
 const handleBlur = async () => {
   focus.value = false
   chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, title.value || '')

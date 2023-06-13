@@ -31,13 +31,14 @@ export const useDataListInit = () => {
       const { data } = res as any // 这里的count与data平级，不在Response结构中
       paginat.count = data.total
       list.value = res.data.list.map(e => {
-        const { id, projectName, state, createTime, indexImage, createUserId } = e
+        // todo preview有效
+        const { id, projectName, state, createTime, preview, createUserId } = e
         return {
           id: id,
           title: projectName,
           createId: createUserId,
           time: createTime,
-          image: indexImage,
+          image: preview,
           release: state !== -1
         }
       })
