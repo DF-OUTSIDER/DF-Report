@@ -21,7 +21,9 @@ export enum ProjectInfoEnum {
   PROJECT_NAME = 'projectName',
   // 描述
   REMARKS = 'remarks',
-  // 缩略图
+  // 缩略图UUID
+  PRIVIEW = 'preview',
+  // 缩略图URL
   THUMBNAIL= 'thumbnail',
   // 是否公开发布
   RELEASE = 'release'
@@ -32,6 +34,7 @@ export type ProjectInfoType = {
   [ProjectInfoEnum.PROJECT_ID]: string,
   [ProjectInfoEnum.PROJECT_NAME]: string,
   [ProjectInfoEnum.REMARKS]: string,
+  [ProjectInfoEnum.PRIVIEW]: string,
   [ProjectInfoEnum.THUMBNAIL]: string,
   [ProjectInfoEnum.RELEASE]: boolean
 }

@@ -241,6 +241,7 @@ export const useSync = () => {
     // 描述
     chartEditStore.setProjectInfo(ProjectInfoEnum.REMARKS, remarks)
     // 缩略图
+    chartEditStore.setProjectInfo(ProjectInfoEnum.PRIVIEW, preview)
     chartEditStore.setProjectInfo(ProjectInfoEnum.THUMBNAIL, previewAddress)
     // 发布
     chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, state === 1)
@@ -303,6 +304,7 @@ export const useSync = () => {
         let uploadParams = new FormData()
         uploadParams.append('fileStream', base64toFile(canvasImage.toDataURL(), `${fetchRouteParamsLocation()}_index_preview.png`))
         uploadParams.append('storageCode', 'local')
+        uploadParams.append('fileCode', chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW])
         const uploadRes = await uploadFile(uploadParams)
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
@@ -323,6 +325,7 @@ export const useSync = () => {
               setTimeout(() => {
                 chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
               }, 1000)
+              window['$message'].success('项目自动保存成功')
               return
             }
             // 失败状态

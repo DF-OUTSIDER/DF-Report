@@ -32,13 +32,13 @@ export const useDataListInit = () => {
       paginat.count = data.total
       list.value = res.data.list.map(e => {
         // todo preview有效
-        const { id, projectName, state, createTime, preview, createUserId } = e
+        const { id, projectName, state, createTime, preview, previewAddress, createUserId } = e
         return {
           id: id,
           title: projectName,
           createId: createUserId,
           time: createTime,
-          image: preview,
+          image: previewAddress,
           release: state !== -1
         }
       })
