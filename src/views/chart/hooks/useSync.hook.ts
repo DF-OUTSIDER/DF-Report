@@ -237,7 +237,7 @@ export const useSync = () => {
     // ID
     chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_ID, id)
     // 名称
-    chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, name)
+    chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, name ? name : '')
     // 描述
     chartEditStore.setProjectInfo(ProjectInfoEnum.REMARKS, remarks)
     // 缩略图
@@ -247,7 +247,7 @@ export const useSync = () => {
     chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, state === 1)
   }
 
-  // * 数据获取
+  // * 数据获取，项目点击编辑时会调用
   const dataSyncFetch = async () => {
     // FIX:重新执行dataSyncFetch需清空chartEditStore.componentList,否则会导致图层重复
     // 切换语言等操作会导致重新执行 dataSyncFetch,此时pinia中并未清空chartEditStore.componentList，导致图层重复
@@ -274,6 +274,30 @@ export const useSync = () => {
       chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
       httpErrorHandle()
     }
+  }
+
+  // 动态更新回调
+  const updateCallBack = {
+    callBack: () => {
+      window['$message'].success('项目自动保存成功')
+    }
+  }
+  const updateProject = async (data: 
+    {
+      projectId: string,
+      name: string
+      preview: string
+      content: string
+      status: string
+    }) => {
+    // 保存数据
+    // let params = new FormData()
+    // params.append('id', data.projectId)
+    // params.append('name', data.name)
+    // params.append('preview', `${uploadRes.data.code}`)
+    // params.append('content', JSONStringify(chartEditStore.getStorageInfo || {}))
+    // params.append('status', (chartEditStore.getProjectInfo.release ? 1 : -1).toString())
+    return await saveProjectApi(data)
   }
 
   // * 数据保存
@@ -304,28 +328,33 @@ export const useSync = () => {
         let uploadParams = new FormData()
         uploadParams.append('fileStream', base64toFile(canvasImage.toDataURL(), `${fetchRouteParamsLocation()}_index_preview.png`))
         uploadParams.append('storageCode', 'local')
-        uploadParams.append('fileCode', chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW])
+        let fileCode = chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW] ? chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW] : ''
+        uploadParams.append('fileCode', fileCode)
         const uploadRes = await uploadFile(uploadParams)
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
           if (uploadRes.data.url) {
-            // await updatePreviewApi({
-            //   id: fetchRouteParamsLocation(),
-            //   preview: `${uploadRes.data.url}`
-            // })
             // 保存数据
-            let params = new FormData()
-            params.append('id', projectId)
-            params.append('preview', `${uploadRes.data.code}`)
-            params.append('content', JSONStringify(chartEditStore.getStorageInfo || {}))
-            const res= await saveProjectApi(params)
-
+            // let params = new FormData()
+            // params.append('id', projectId)
+            // params.append('name', 
+            // params.append('preview', 
+            // params.append('content', )
+            // params.append('status', )
+            //  await saveProjectApi(params)
+             const res = await updateProject({
+              projectId: projectId,
+              name: chartEditStore.getProjectInfo.projectName,
+              preview: `${uploadRes.data.code}`,
+              content: JSONStringify(chartEditStore.getStorageInfo || {}),
+              status: (chartEditStore.getProjectInfo.release ? 1 : -1).toString()
+            })
             if (res && res.code === ResultEnum.SUCCESS) {
               // 成功状态
               setTimeout(() => {
                 chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
               }, 1000)
-              window['$message'].success('项目自动保存成功')
+              updateCallBack.callBack()
               return
             }
             // 失败状态
@@ -361,6 +390,7 @@ export const useSync = () => {
     updateStoreInfo,
     dataSyncFetch,
     dataSyncUpdate,
+    updateCallBack,
     intervalDataSyncUpdate
   }
 }

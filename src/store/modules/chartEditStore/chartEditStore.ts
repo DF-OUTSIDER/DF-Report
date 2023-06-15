@@ -152,7 +152,7 @@ export const useChartEditStore = defineStore({
         Params: {}
       }
     },
-    // 图表数组（需存储给后端）
+    // todo 图表数组（需存储给后端）
     componentList: []
   }),
   getters: {

@@ -54,6 +54,8 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { syncData } from '../../ContentEdit/components/EditTools/hooks/useSyncUpdate.hook'
 import { ProjectInfoEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { changeProjectReleaseApi } from '@/api/path'
+import { useSync } from '@/views/chart/hooks/useSync.hook'
+
 import {
   previewPath,
   renderIcon,
@@ -69,6 +71,7 @@ import { cloneDeep } from 'lodash'
 
 const { BrowsersOutlineIcon, SendIcon, AnalyticsIcon, CloseIcon } = icon.ionicons5
 const chartEditStore = useChartEditStore()
+const { dataSyncUpdate, updateCallBack } = useSync()
 
 const previewPathRef = ref(previewPath())
 const { copy, isSupported } = useClipboard({ source: previewPathRef })
@@ -135,25 +138,31 @@ const copyPreviewPath = (successText?: string, failureText?: string) => {
   }
 }
 
+updateCallBack.callBack = () => {
+  window['$message'].success('发布成功！已复制地址到剪贴板~')
+}
+
 // 发布
 const sendHandle = async () => {
-  const res = await changeProjectReleaseApi({
-    id: fetchRouteParamsLocation(),
-    // 反过来
-    state: release.value ? -1 : 1
-  })
+  chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, release.value ? false : true)
+  dataSyncUpdate()
+  // const res = await changeProjectReleaseApi({
+  //   id: fetchRouteParamsLocation(),
+  //   // 反过来
+  //   status: release.value ? -1 : 1
+  // })
 
-  if (res && res.code === ResultEnum.SUCCESS) {
-    modelShowHandle()
-    if (!release.value) {
-      copyPreviewPath('发布成功！已复制地址到剪贴板~', '发布成功！')
-    } else {
-      window['$message'].success(`已取消发布`)
-    }
-    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release.value)
-  } else {
-    httpErrorHandle()
-  }
+  // if (res && res.code === ResultEnum.SUCCESS) {
+  //   modelShowHandle()
+  //   if (!release.value) {
+  //     copyPreviewPath('发布成功！已复制地址到剪贴板~', '发布成功！')
+  //   } else {
+  //     window['$message'].success(`已取消发布`)
+  //   }
+  //   chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release.value)
+  // } else {
+  //   httpErrorHandle()
+  // }
 }
 
 const btnList = [

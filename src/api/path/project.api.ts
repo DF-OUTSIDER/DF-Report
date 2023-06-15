@@ -82,7 +82,7 @@ export const deleteProjectApi = async (data: object) => {
 // * 修改发布状态 [-1未发布,1发布]
 export const changeProjectReleaseApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.PUT)(`${ModuleTypeEnum.GOVIEW_PROJECT}/publish`, data)
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.GOVIEW_PROJECT}/save`, data)
     return res
   } catch {
     httpErrorHandle()

@@ -4,9 +4,16 @@ import { DialogEnum } from '@/enums/pluginEnum'
 import { projectListApi, deleteProjectApi, changeProjectReleaseApi } from '@/api/path'
 import { Chartype, ChartList } from '../../../index.d'
 import { ResultEnum } from '@/enums/httpEnum'
+import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import { ProjectInfoEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { useSync } from '@/views/chart/hooks/useSync.hook'
 
 // 数据初始化
 export const useDataListInit = () => {
+
+  const chartEditStore = useChartEditStore()
+  const { dataSyncUpdate } = useSync()
+
   const loading = ref(true)
 
   const paginat = reactive({
@@ -32,12 +39,13 @@ export const useDataListInit = () => {
       paginat.count = data.total
       list.value = res.data.list.map(e => {
         // todo preview有效
-        const { id, projectName, state, createTime, preview, previewAddress, createUserId } = e
+        const { id, name, state, createTime, preview, previewAddress, createUserId } = e
         return {
           id: id,
-          title: projectName,
+          title: name,
           createId: createUserId,
           time: createTime,
+          preview: preview,
           image: previewAddress,
           release: state !== -1
         }
@@ -89,24 +97,26 @@ export const useDataListInit = () => {
   // 发布处理
   const releaseHandle = async (cardData: Chartype, index: number) => {
     const { id, release } = cardData
-    const res = await changeProjectReleaseApi({
-      id: id,
-      // [-1未发布, 1发布]
-      state: !release ? 1 : -1
-    })
-    if (res && res.code === ResultEnum.SUCCESS) {
-      list.value = []
-      fetchList()
-      // 发布 -> 未发布
-      if (release) {
-        window['$message'].success(window['$t']('global.r_unpublish_success'))
-        return
-      }
-      // 未发布 -> 发布
-      window['$message'].success(window['$t']('global.r_publish_success'))
-      return
-    }
-    httpErrorHandle()
+    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release)
+    dataSyncUpdate()
+    // const res = await changeProjectReleaseApi({
+    //   id: id,
+    //   // [-1未发布, 1发布]
+    //   status: !release ? 1 : -1
+    // })
+    // if (res && res.code === ResultEnum.SUCCESS) {
+    //   list.value = []
+    //   fetchList()
+    //   // 发布 -> 未发布
+    //   if (release) {
+    //     window['$message'].success(window['$t']('global.r_unpublish_success'))
+    //     return
+    //   }
+    //   // 未发布 -> 发布
+    //   window['$message'].success(window['$t']('global.r_publish_success'))
+    //   return
+    // }
+    // httpErrorHandle()
   }
 
   // 立即请求

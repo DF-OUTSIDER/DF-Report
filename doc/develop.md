@@ -13,3 +13,9 @@ window['$message'].success(window['$t']('global.logout_success'))
 window['$message'].success(window['$t']('global.logout_failure'))
 window['$message'].warning('查询路由信息失败，请联系管理员！')
 ```
+
+缓存
+```
+chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW]
+chartEditStore.getProjectInfo.release
+```
