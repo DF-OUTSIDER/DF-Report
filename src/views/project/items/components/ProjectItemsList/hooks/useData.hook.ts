@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue'
-import { goDialog, httpErrorHandle } from '@/utils'
+import { goDialog, httpErrorHandle, JSONStringify } from '@/utils'
 import { DialogEnum } from '@/enums/pluginEnum'
 import { projectListApi, deleteProjectApi, changeProjectReleaseApi } from '@/api/path'
 import { Chartype, ChartList } from '../../../index.d'
@@ -12,7 +12,7 @@ import { useSync } from '@/views/chart/hooks/useSync.hook'
 export const useDataListInit = () => {
 
   const chartEditStore = useChartEditStore()
-  const { dataSyncUpdate } = useSync()
+  const { dataSyncUpdate, updateProject } = useSync()
 
   const loading = ref(true)
 
@@ -97,26 +97,34 @@ export const useDataListInit = () => {
   // 发布处理
   const releaseHandle = async (cardData: Chartype, index: number) => {
     const { id, release } = cardData
-    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release)
-    dataSyncUpdate()
+    
+    // dataSyncUpdate()
+    const res = await updateProject({
+      projectId: id as string,
+      name: chartEditStore.getProjectInfo.projectName,
+      preview: chartEditStore.getProjectInfo.preview,
+      content: JSONStringify(chartEditStore.getStorageInfo || {}),
+      status: !release ? 1 : -1
+    })
     // const res = await changeProjectReleaseApi({
     //   id: id,
     //   // [-1未发布, 1发布]
     //   status: !release ? 1 : -1
     // })
-    // if (res && res.code === ResultEnum.SUCCESS) {
-    //   list.value = []
-    //   fetchList()
-    //   // 发布 -> 未发布
-    //   if (release) {
-    //     window['$message'].success(window['$t']('global.r_unpublish_success'))
-    //     return
-    //   }
-    //   // 未发布 -> 发布
-    //   window['$message'].success(window['$t']('global.r_publish_success'))
-    //   return
-    // }
-    // httpErrorHandle()
+    if (res && res.code === ResultEnum.SUCCESS) {
+      chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, res.data?.preview)
+      list.value = []
+      fetchList()
+      // 发布 -> 未发布
+      if (release) {
+        window['$message'].success(window['$t']('global.r_unpublish_success'))
+        return
+      }
+      // 未发布 -> 发布
+      window['$message'].success(window['$t']('global.r_publish_success'))
+      return
+    }
+    httpErrorHandle()
   }
 
   // 立即请求
@@ -133,3 +141,5 @@ export const useDataListInit = () => {
     deleteHandle
   }
 }
+
+

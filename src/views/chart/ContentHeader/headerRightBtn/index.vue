@@ -64,14 +64,15 @@ import {
   setSessionStorage,
   getLocalStorage,
   httpErrorHandle,
-  fetchRouteParamsLocation
+  fetchRouteParamsLocation,
+  JSONStringify
 } from '@/utils'
 import { icon } from '@/plugins'
 import { cloneDeep } from 'lodash'
 
 const { BrowsersOutlineIcon, SendIcon, AnalyticsIcon, CloseIcon } = icon.ionicons5
 const chartEditStore = useChartEditStore()
-const { dataSyncUpdate, updateCallBack } = useSync()
+const { dataSyncUpdate, updateCallBack, updateProject } = useSync()
 
 const previewPathRef = ref(previewPath())
 const { copy, isSupported } = useClipboard({ source: previewPathRef })
@@ -145,24 +146,30 @@ updateCallBack.callBack = () => {
 // 发布
 const sendHandle = async () => {
   chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, release.value ? false : true)
-  dataSyncUpdate()
+  const res = await updateProject({
+      projectId:  fetchRouteParamsLocation(),
+      name: chartEditStore.getProjectInfo.projectName,
+      preview: chartEditStore.getProjectInfo.preview,
+      content: JSONStringify(chartEditStore.getStorageInfo || {}),
+      status: release.value ? -1 : 1
+    })
   // const res = await changeProjectReleaseApi({
   //   id: fetchRouteParamsLocation(),
   //   // 反过来
   //   status: release.value ? -1 : 1
   // })
 
-  // if (res && res.code === ResultEnum.SUCCESS) {
-  //   modelShowHandle()
-  //   if (!release.value) {
-  //     copyPreviewPath('发布成功！已复制地址到剪贴板~', '发布成功！')
-  //   } else {
-  //     window['$message'].success(`已取消发布`)
-  //   }
-  //   chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release.value)
-  // } else {
-  //   httpErrorHandle()
-  // }
+  if (res && res.code === ResultEnum.SUCCESS) {
+    modelShowHandle()
+    if (!release.value) {
+      copyPreviewPath('发布成功！已复制地址到剪贴板~', '发布成功！')
+    } else {
+      window['$message'].success(`已取消发布`)
+    }
+    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release.value)
+  } else {
+    httpErrorHandle()
+  }
 }
 
 const btnList = [
@@ -197,6 +204,7 @@ const comBtnList = computed(() => {
   cloneList.shift()
   return cloneList
 })
+
 </script>
 
 <style lang="scss" scoped>

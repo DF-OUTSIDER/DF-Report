@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { ref, nextTick, computed, watchEffect } from 'vue'
 import { ResultEnum } from '@/enums/httpEnum'
-import { fetchRouteParamsLocation, httpErrorHandle, setTitle } from '@/utils'
+import { fetchRouteParamsLocation, httpErrorHandle, setTitle, JSONStringify } from '@/utils'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { ProjectInfoEnum, EditCanvasConfigEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { updateProjectApi } from '@/api/path'
@@ -46,7 +46,7 @@ import { useSync } from '../../hooks/useSync.hook'
 import { icon } from '@/plugins'
 
 const chartEditStore = useChartEditStore()
-const { dataSyncUpdate } = useSync()
+const { dataSyncUpdate, updateProject } = useSync()
 const { FishIcon } = icon.ionicons5
 
 const focus = ref<boolean>(false)
@@ -77,18 +77,23 @@ const handleFocus = () => {
 // 保存项目名称
 const handleBlur = async () => {
   focus.value = false
-  chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, title.value || '')
-  dataSyncUpdate()
-  // const res = (await updateProjectApi({
-  //   id: fetchRouteParamsLocation(),
-  //   name: title.value
-  // }))
-  // if (res && res.code === ResultEnum.SUCCESS) {
-    
-  // } else {
-  //   httpErrorHandle()
-  // }
+  const res = await updateProject({
+      projectId: fetchRouteParamsLocation(),
+      name: chartEditStore.getProjectInfo.projectName,
+      preview: chartEditStore.getProjectInfo.preview,
+      content: JSONStringify(chartEditStore.getStorageInfo || {}),
+      status: chartEditStore.getProjectInfo.release ? 1 : -1
+    })
+
+  if (res && res.code === ResultEnum.SUCCESS) {
+    chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, title.value || '')
+    window['$message'].success('项目名称更新完成')
+       
+  } else {
+    httpErrorHandle()
+  }
 }
+
 </script>
 <style lang="scss" scoped>
 .title {

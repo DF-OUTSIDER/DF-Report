@@ -288,15 +288,9 @@ export const useSync = () => {
       name: string
       preview: string
       content: string
-      status: string
+      status: number
     }) => {
     // 保存数据
-    // let params = new FormData()
-    // params.append('id', data.projectId)
-    // params.append('name', data.name)
-    // params.append('preview', `${uploadRes.data.code}`)
-    // params.append('content', JSONStringify(chartEditStore.getStorageInfo || {}))
-    // params.append('status', (chartEditStore.getProjectInfo.release ? 1 : -1).toString())
     return await saveProjectApi(data)
   }
 
@@ -334,20 +328,14 @@ export const useSync = () => {
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
           if (uploadRes.data.url) {
-            // 保存数据
-            // let params = new FormData()
-            // params.append('id', projectId)
-            // params.append('name', 
-            // params.append('preview', 
-            // params.append('content', )
-            // params.append('status', )
-            //  await saveProjectApi(params)
-             const res = await updateProject({
+              // 保存数据
+              chartEditStore.setProjectInfo(ProjectInfoEnum.PRIVIEW, `${uploadRes.data.code}`)
+              const res = await updateProject({
               projectId: projectId,
               name: chartEditStore.getProjectInfo.projectName,
               preview: `${uploadRes.data.code}`,
               content: JSONStringify(chartEditStore.getStorageInfo || {}),
-              status: (chartEditStore.getProjectInfo.release ? 1 : -1).toString()
+              status: chartEditStore.getProjectInfo.release ? 1 : -1
             })
             if (res && res.code === ResultEnum.SUCCESS) {
               // 成功状态
@@ -389,6 +377,7 @@ export const useSync = () => {
     updateComponent,
     updateStoreInfo,
     dataSyncFetch,
+    updateProject,
     dataSyncUpdate,
     updateCallBack,
     intervalDataSyncUpdate
