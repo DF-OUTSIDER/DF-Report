@@ -29,12 +29,12 @@
       show-count
       placeholder="请输入项目名称"
       v-model:value.trim="title"
-      @keyup.enter="handleBlur"
+      
       @blur="handleBlur"
     ></n-input>
   </n-space>
 </template>
-
+<!-- @keyup.enter="handleBlur" -->
 <script setup lang="ts">
 import { ref, nextTick, computed, watchEffect } from 'vue'
 import { ResultEnum } from '@/enums/httpEnum'

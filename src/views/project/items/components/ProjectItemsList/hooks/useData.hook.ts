@@ -112,7 +112,7 @@ export const useDataListInit = () => {
     //   status: !release ? 1 : -1
     // })
     if (res && res.code === ResultEnum.SUCCESS) {
-      chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, res.data?.preview)
+      chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, res.data?.preview === 1)
       list.value = []
       fetchList()
       // 发布 -> 未发布
