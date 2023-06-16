@@ -147,9 +147,11 @@ updateCallBack.callBack = () => {
 const sendHandle = async () => {
   chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, release.value ? false : true)
   const res = await updateProject({
-      projectId:  fetchRouteParamsLocation(),
+      id:  fetchRouteParamsLocation(),
+      
       name: chartEditStore.getProjectInfo.projectName,
       preview: chartEditStore.getProjectInfo.preview,
+
       content: JSONStringify(chartEditStore.getStorageInfo || {}),
       status: release.value ? -1 : 1
     })

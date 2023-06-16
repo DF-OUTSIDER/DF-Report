@@ -78,7 +78,7 @@ const handleFocus = () => {
 const handleBlur = async () => {
   focus.value = false
   const res = await updateProject({
-      projectId: fetchRouteParamsLocation(),
+      id: fetchRouteParamsLocation(),
       name: chartEditStore.getProjectInfo.projectName,
       preview: chartEditStore.getProjectInfo.preview,
       content: JSONStringify(chartEditStore.getStorageInfo || {}),

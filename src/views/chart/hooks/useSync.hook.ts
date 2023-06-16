@@ -284,7 +284,7 @@ export const useSync = () => {
   }
   const updateProject = async (data: 
     {
-      projectId: string,
+      id: string,
       name: string
       preview: string
       content: string
@@ -303,6 +303,8 @@ export const useSync = () => {
       window['$message'].error('数据初未始化成功,请刷新页面！')
       return
     }
+    console.log(JSONStringify(chartEditStore.getProjectInfo))
+    window['$message'].success(JSONStringify(chartEditStore.getProjectInfo))
 
     chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.START)
 
@@ -322,16 +324,17 @@ export const useSync = () => {
         let uploadParams = new FormData()
         uploadParams.append('fileStream', base64toFile(canvasImage.toDataURL(), `${fetchRouteParamsLocation()}_index_preview.png`))
         uploadParams.append('storageCode', 'local')
+        // todo fileCode 无效
         let fileCode = chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW] ? chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW] : ''
         uploadParams.append('fileCode', fileCode)
         const uploadRes = await uploadFile(uploadParams)
         // 保存预览图
         if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
           if (uploadRes.data.url) {
-              // 保存数据
+              // todo 保存数据 name， preview , status 无效
               chartEditStore.setProjectInfo(ProjectInfoEnum.PRIVIEW, `${uploadRes.data.code}`)
               const res = await updateProject({
-              projectId: projectId,
+              id: projectId,
               name: chartEditStore.getProjectInfo.projectName,
               preview: `${uploadRes.data.code}`,
               content: JSONStringify(chartEditStore.getStorageInfo || {}),

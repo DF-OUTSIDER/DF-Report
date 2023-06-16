@@ -98,9 +98,9 @@ export const useDataListInit = () => {
   const releaseHandle = async (cardData: Chartype, index: number) => {
     const { id, release } = cardData
     
-    // dataSyncUpdate()
+    // todo name, preview 无效
     const res = await updateProject({
-      projectId: id as string,
+      id: id as string,
       name: chartEditStore.getProjectInfo.projectName,
       preview: chartEditStore.getProjectInfo.preview,
       content: JSONStringify(chartEditStore.getStorageInfo || {}),
