@@ -155,20 +155,19 @@ const sendHandle = async () => {
       content: JSONStringify(chartEditStore.getStorageInfo || {}),
       status: release.value ? -1 : 1
     })
-  // const res = await changeProjectReleaseApi({
-  //   id: fetchRouteParamsLocation(),
-  //   // 反过来
-  //   status: release.value ? -1 : 1
-  // })
 
   if (res && res.code === ResultEnum.SUCCESS) {
+    // console.log(JSONStringify(res.data))
     modelShowHandle()
-    if (!release.value) {
+    const data = res.data
+    if (data.status === 1) {
+      release.value = true
       copyPreviewPath('发布成功！已复制地址到剪贴板~', '发布成功！')
     } else {
+      release.value = false
       window['$message'].success(`已取消发布`)
     }
-    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release.value)
+    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, release.value)
   } else {
     httpErrorHandle()
   }

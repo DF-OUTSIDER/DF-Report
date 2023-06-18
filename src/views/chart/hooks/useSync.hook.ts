@@ -303,8 +303,9 @@ export const useSync = () => {
       window['$message'].error('数据初未始化成功,请刷新页面！')
       return
     }
-    console.log(JSONStringify(chartEditStore.getProjectInfo))
-    window['$message'].success(JSONStringify(chartEditStore.getProjectInfo))
+    // todo test
+    //console.log(JSONStringify(chartEditStore.getProjectInfo))
+    //window['$message'].success(JSONStringify(chartEditStore.getProjectInfo))
 
     chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.START)
 
