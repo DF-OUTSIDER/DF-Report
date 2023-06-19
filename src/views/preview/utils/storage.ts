@@ -17,7 +17,6 @@ const chartEditStore = useChartEditStore()
 
 export interface ChartEditStorageType extends ChartEditStorage {
   id: string
-  status: number
 }
 
 // 根据路由 id 获取存储数据的信息
@@ -30,8 +29,8 @@ export const getSessionStorageInfo = async () => {
     // 接口调用
     const res = await getPublishProjectApi({ id: id })
     if (res && res.code === ResultEnum.SUCCESS) {
-      const { content, state } = res.data
-      if (state === -1) {
+      const { content, status } = res.data
+      if (status === -1) {
         // 跳转未发布页
         return { isRelease: false }
       }

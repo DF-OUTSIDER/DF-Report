@@ -20,7 +20,7 @@ export type ProjectItem = {
    * -1: 未发布\
    * 1: 已发布
    */
-  state: number
+  status: number
   /**
    * 创建时间
    */

@@ -53,14 +53,14 @@ const focus = ref<boolean>(false)
 const inputInstRef = ref(null)
 
 const title = ref<string>(fetchRouteParamsLocation())
+title.value = title.value.replace(/\s/g, '') as string
 
 watchEffect(() => {
   title.value = chartEditStore.getProjectInfo.projectName || ''
+  title.value = title.value.replace(/\s/g, '') as string
 })
 
 const comTitle = computed(() => {
-  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  title.value = title.value.replace(/\s/g, '')
   const newTitle = title.value.length ? title.value : '新项目'
   setTitle(`工作空间-${newTitle}`)
   chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.PROJECT_NAME, newTitle)
@@ -79,7 +79,7 @@ const handleBlur = async () => {
   focus.value = false
   const res = await updateProject({
       id: fetchRouteParamsLocation(),
-      name: chartEditStore.getProjectInfo.projectName,
+      name: title.value,
       preview: chartEditStore.getProjectInfo.preview,
       content: JSONStringify(chartEditStore.getStorageInfo || {}),
       status: chartEditStore.getProjectInfo.release ? 1 : -1
