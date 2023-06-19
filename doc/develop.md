@@ -19,3 +19,11 @@ window['$message'].warning('查询路由信息失败，请联系管理员！')
 chartEditStore.getProjectInfo[ProjectInfoEnum.PRIVIEW]
 chartEditStore.getProjectInfo.release
 ```
+
+预览
+两个位置
+1、
+src\views\chart\ContentHeader\headerRightBtn\index.vue
+2、
+src\views\project\items\components\ProjectItemsList\index.vue
+src\views\project\items\components\ProjectItemsCard\index.vue

@@ -53,7 +53,7 @@ import { ResultEnum } from '@/enums/httpEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { syncData } from '../../ContentEdit/components/EditTools/hooks/useSyncUpdate.hook'
 import { ProjectInfoEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
-import { changeProjectReleaseApi } from '@/api/path'
+import { changeProjectReleaseApi, editStatusProjectApi } from '@/api/path'
 import { useSync } from '@/views/chart/hooks/useSync.hook'
 
 import {
@@ -146,13 +146,8 @@ updateCallBack.callBack = () => {
 // 发布
 const sendHandle = async () => {
   chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, release.value ? false : true)
-  const res = await updateProject({
+  const res = await editStatusProjectApi({
       id:  fetchRouteParamsLocation(),
-      
-      name: chartEditStore.getProjectInfo.projectName,
-      preview: chartEditStore.getProjectInfo.preview,
-
-      content: JSONStringify(chartEditStore.getStorageInfo || {}),
       status: release.value ? -1 : 1
     })
 

@@ -46,6 +46,16 @@ export const fetchProjectApi = async (data: object) => {
   }
 }
 
+// * 获取发布项目数据
+export const getPublishProjectApi = async (data: object) => {
+  try {
+    const res = await http(RequestHttpEnum.GET)<ProjectDetail>(`${ModuleTypeEnum.GOVIEW_PROJECT}/publishDetail`, data)
+    return res
+  } catch {
+    httpErrorHandle()
+  }
+}
+
 // * 保存项目 , ContentTypeEnum.FORM_URLENCODED
 export const saveProjectApi = async (data: object) => {
   try {
@@ -63,6 +73,16 @@ export const saveProjectApi = async (data: object) => {
 export const updateProjectApi = async (data: object) => {
   try {
     const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.GOVIEW_PROJECT}/save`, data)
+    return res
+  } catch {
+    httpErrorHandle()
+  }
+}
+
+// * 修改项目发布状态
+export const editStatusProjectApi = async (data: object) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.GOVIEW_PROJECT}/editStatus`, data)
     return res
   } catch {
     httpErrorHandle()

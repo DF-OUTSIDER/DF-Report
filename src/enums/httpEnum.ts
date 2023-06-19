@@ -15,6 +15,7 @@ export enum ResultEnum {
   NOT_FOUND = 404,
   TOKEN_OVERDUE = 886,
   TIMEOUT = 60000,
+  GOVIEW_PROJECT_NOT_PUBLISH = 'EE001'
 }
 
 // 数据相关

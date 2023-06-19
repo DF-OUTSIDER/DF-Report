@@ -231,9 +231,9 @@ export const useSync = () => {
     preview: string,
     previewAddress: string,
     remarks: string,
-    state: number
+    status: number
   }) => {
-    const { id, name, remarks, preview, previewAddress, state } = projectData
+    const { id, name, remarks, preview, previewAddress, status } = projectData
     // ID
     chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_ID, id)
     // 名称
@@ -244,7 +244,7 @@ export const useSync = () => {
     chartEditStore.setProjectInfo(ProjectInfoEnum.PRIVIEW, preview)
     chartEditStore.setProjectInfo(ProjectInfoEnum.THUMBNAIL, previewAddress)
     // 发布
-    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, state === 1)
+    chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, status === 1)
   }
 
   // * 数据获取，项目点击编辑时会调用

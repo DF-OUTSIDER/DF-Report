@@ -1,5 +1,13 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\router\router-guards.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { Router } from 'vue-router';
-import { PageEnum, PreviewEnum } from '@/enums/pageEnum'
+import { PageEnum, PreviewEnum, PublishEnum } from '@/enums/pageEnum'
 import { loginCheck } from '@/utils'
 
 // 路由白名单
@@ -7,7 +15,9 @@ const routerAllowList = [
   // 登录
   PageEnum.BASE_LOGIN_NAME,
   // 预览
-  PreviewEnum.CHART_PREVIEW_NAME
+  PreviewEnum.CHART_PREVIEW_NAME,
+  // todo 发布，未使用
+  PublishEnum.CHART_PUBLISH_NAME
 ]
 
 export function createRouterGuards(router: Router) {

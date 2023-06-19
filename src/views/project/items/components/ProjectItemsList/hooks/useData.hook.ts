@@ -1,7 +1,7 @@
 import { ref, reactive } from 'vue'
 import { goDialog, httpErrorHandle, JSONStringify } from '@/utils'
 import { DialogEnum } from '@/enums/pluginEnum'
-import { projectListApi, deleteProjectApi, changeProjectReleaseApi } from '@/api/path'
+import { projectListApi, deleteProjectApi, changeProjectReleaseApi, editStatusProjectApi } from '@/api/path'
 import { Chartype, ChartList } from '../../../index.d'
 import { ResultEnum } from '@/enums/httpEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -39,7 +39,7 @@ export const useDataListInit = () => {
       paginat.count = data.total
       list.value = res.data.list.map(e => {
         // todo preview有效
-        const { id, name, state, createTime, preview, previewAddress, createUserId } = e
+        const { id, name, status, createTime, preview, previewAddress, createUserId } = e
         return {
           id: id,
           title: name,
@@ -47,7 +47,7 @@ export const useDataListInit = () => {
           time: createTime,
           preview: preview,
           image: previewAddress,
-          release: state !== -1
+          release: status !== -1
         }
       })
       setTimeout(() => {
@@ -98,31 +98,22 @@ export const useDataListInit = () => {
   const releaseHandle = async (cardData: Chartype, index: number) => {
     const { id, release } = cardData
     
-    // todo name, preview 无效
-    const res = await updateProject({
+    const res = await editStatusProjectApi({
       id: id as string,
-      name: chartEditStore.getProjectInfo.projectName,
-      preview: chartEditStore.getProjectInfo.preview,
-      content: JSONStringify(chartEditStore.getStorageInfo || {}),
       status: !release ? 1 : -1
     })
-    // const res = await changeProjectReleaseApi({
-    //   id: id,
-    //   // [-1未发布, 1发布]
-    //   status: !release ? 1 : -1
-    // })
     if (res && res.code === ResultEnum.SUCCESS) {
-      chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, res.data?.preview === 1)
       list.value = []
       fetchList()
       // 发布 -> 未发布
-      if (release) {
+      if (res.data?.status === -1) {
         window['$message'].success(window['$t']('global.r_unpublish_success'))
         return
+      } else {
+        // 未发布 -> 发布
+        window['$message'].success(window['$t']('global.r_publish_success'))
+        return
       }
-      // 未发布 -> 发布
-      window['$message'].success(window['$t']('global.r_publish_success'))
-      return
     }
     httpErrorHandle()
   }

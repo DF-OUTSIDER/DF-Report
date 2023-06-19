@@ -1,3 +1,11 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\enums\pageEnum.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { ResultEnum } from '@/enums/httpEnum'
 
 export enum ChartEnum {
@@ -10,6 +18,12 @@ export enum PreviewEnum {
   //  图表预览
   CHART_PREVIEW = '/chart/preview/:id(.*)*',
   CHART_PREVIEW_NAME = 'ChartPreview',
+}
+
+// todo 未使用
+export enum PublishEnum {
+  CHART_PUBLISH = '/chart/publish/:id(.*)*',
+  CHART_PUBLISH_NAME = 'ChartPublish'
 }
 
 export enum EditEnum {

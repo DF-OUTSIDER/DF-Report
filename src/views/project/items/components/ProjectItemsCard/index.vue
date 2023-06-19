@@ -118,13 +118,23 @@ const fnBtnList = reactive([
   }
 ])
 
-const selectOptions = ref([
-  {
-    label: renderLang('global.r_preview'),
-    key: 'preview',
-    icon: renderIcon(BrowsersOutlineIcon)
-  },
-  {
+const getSelectOptions = () => {
+  let options = []
+
+  if (props.cardData?.release) {
+    options.push({
+      label: renderLang('global.r_publish_preview'),
+      key: 'publishPreview',
+      icon: renderIcon(BrowsersOutlineIcon)
+    })
+  } else {
+    // options.push({
+    //   label: renderLang('global.r_preview'),
+    //   key: 'preview',
+    //   icon: renderIcon(BrowsersOutlineIcon)
+    // })
+  }
+  options.push({
     label: props.cardData?.release
       ? renderLang('global.r_unpublish')
       : renderLang('global.r_publish'),
@@ -135,12 +145,15 @@ const selectOptions = ref([
     label: renderLang('global.r_delete'),
     key: 'delete',
     icon: renderIcon(TrashIcon)
-  }
-])
+  })
+  return options
+}
+
+const selectOptions = ref(getSelectOptions())
 
 const handleSelect = (key: string) => {
   switch (key) {
-    case 'preview':
+    case 'publishPreview':
       previewHandle()
       break
     case 'delete':
@@ -170,9 +183,10 @@ const editHandle = () => {
   emit('edit', props.cardData)
 }
 
-// 编辑处理
+// 发布处理
 const releaseHandle = () => {
   emit('release', props.cardData)
+  selectOptions.value = getSelectOptions()
 }
 
 // 放大处理

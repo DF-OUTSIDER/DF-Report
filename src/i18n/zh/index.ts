@@ -1,3 +1,11 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\i18n\zh\index.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import login from './login'
 import project from './project'
 
@@ -24,6 +32,7 @@ const global = {
   r_rename: '重命名',
   r_rename_success: '重命名成功！',
   r_publish: '发布',
+  r_publish_preview: '发布预览',
   r_publish_success: '成功发布！',
   r_unpublish: '取消发布',
   r_unpublish_success: '取消成功！',

@@ -1,14 +1,23 @@
+/*
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\views\preview\utils\storage.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import { getSessionStorage, fetchRouteParamsLocation, httpErrorHandle, JSONParse } from '@/utils'
 import { ResultEnum } from '@/enums/httpEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { ChartEditStorage } from '@/store/modules/chartEditStore/chartEditStore.d'
-import { fetchProjectApi } from '@/api/path'
+import { getPublishProjectApi } from '@/api/path'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 
 const chartEditStore = useChartEditStore()
 
 export interface ChartEditStorageType extends ChartEditStorage {
   id: string
+  status: number
 }
 
 // 根据路由 id 获取存储数据的信息
@@ -19,7 +28,7 @@ export const getSessionStorageInfo = async () => {
   // 是否本地预览
   if (!storageList || storageList.findIndex(e => e.id === id.toString()) === -1) {
     // 接口调用
-    const res = await fetchProjectApi({ projectId: id })
+    const res = await getPublishProjectApi({ id: id })
     if (res && res.code === ResultEnum.SUCCESS) {
       const { content, state } = res.data
       if (state === -1) {
@@ -33,7 +42,12 @@ export const getSessionStorageInfo = async () => {
       chartEditStore.componentList = componentList
       return parseData
     } else {
-      httpErrorHandle()
+      if (res && res.code === ResultEnum.GOVIEW_PROJECT_NOT_PUBLISH) {
+        window['$message'].error('项目未发布，不允许查看！')
+      } else {
+        // todo 
+        httpErrorHandle()
+      }
     }
   } else {
     // 本地读取
