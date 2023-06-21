@@ -73,7 +73,7 @@
         <n-text>SQL 类型不支持 Get 请求，请使用其它方式</n-text>
       </template>
       <template v-else>
-        <n-tag type="warning">后台默认 sql 接口：http://127.0.0.1:8010/api/v1/xxx</n-tag>
+        <n-tag type="warning">后台默认 sql 接口：http://127.0.0.1:8010/api/v1/goViewQueryData/bySql</n-tag>
         <setting-item-box name="键名">
           <n-tag type="primary" :bordered="false" style="width: 40px; font-size: 16px"> sql </n-tag>
         </setting-item-box>
