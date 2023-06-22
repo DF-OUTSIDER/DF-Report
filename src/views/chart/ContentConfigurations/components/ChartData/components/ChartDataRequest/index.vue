@@ -14,6 +14,7 @@
       <!-- 底部 -->
       <template #action>
         <n-space justify="space-between">
+          <n-button type="primary" @click="closeHandle"> {{ saveBtnText || '取消' }}</n-button>
           <div>
             <n-text>「 {{ chartConfig.categoryName }} 」</n-text>
             <n-text>—— </n-text>

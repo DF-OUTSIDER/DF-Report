@@ -233,6 +233,7 @@ export interface RequestConfigType extends RequestPublicConfigType {
   requestParamsBodyType: RequestBodyEnum
   // SQL 请求对象
   requestSQLContent: {
+    dbCode: string
     sql: string
   }
 }
