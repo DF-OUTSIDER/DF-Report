@@ -45,3 +45,13 @@ export const ossUrlApi = async (data: object) => {
     httpErrorHandle()
   }
 }
+
+// 获取数据源列表,默认前10条
+export const getDbSourceListApi = async () => {
+  try {
+    const res = await http(RequestHttpEnum.GET)(`/dbSource/list`)
+    return res
+  } catch (err) {
+    httpErrorHandle()
+  }
+}

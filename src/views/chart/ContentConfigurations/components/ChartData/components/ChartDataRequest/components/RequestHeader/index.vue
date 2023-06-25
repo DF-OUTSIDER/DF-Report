@@ -79,6 +79,7 @@
             class="select-time-options"
             v-model:value="requestSQLContent['dbCode']"
             :options="selectDbOptions"
+            @click="getDbSource"
           />
         </setting-item-box>
         <setting-item-box name="键名">
@@ -93,12 +94,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs, PropType } from 'vue'
+import { ref, toRefs, PropType, onMounted, onBeforeMount } from 'vue'
 import { MonacoEditor } from '@/components/Pages/MonacoEditor'
 import { RequestHeaderTable } from '../RequestHeaderTable/index'
 import { SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
 import { useTargetData } from '@/views/chart/ContentConfigurations/components/hooks/useTargetData.hook'
 import { RequestConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { getDbSourceListApi } from '@/api/path'
 import {
   RequestParamsTypeEnum,
   RequestContentTypeEnum,
@@ -108,6 +110,24 @@ import {
   RequestHttpEnum
 } from '@/enums/httpEnum'
 
+let selectDbOptions: { label: any; value: any }[] = []
+
+const getDbSource = async () => {
+  const res = await getDbSourceListApi()
+  if (res) {
+      const dbArr = res.data.list
+      dbArr.forEach((element) => {
+        console.log(element.code)
+        if (!selectDbOptions.find((item) => item.value === element.code)) {
+          selectDbOptions.push({ 
+            label: element.code,
+            value: element.code
+          })
+        }
+      })
+    }
+}
+
 const props = defineProps({
   targetDataRequest: Object as PropType<RequestConfigType>
 })
@@ -115,18 +135,6 @@ const props = defineProps({
 const { requestHttpType, requestContentType, requestSQLContent, requestParams, requestParamsBodyType } = toRefs(
   props.targetDataRequest as RequestConfigType
 )
-
-const selectDbOptions = [
-  {
-    label: 'datafish',
-    value: 'datafish'
-  },
-  {
-    label: 'wvp',
-    value: 'wvp'
-  }
-]
-
 const tabValue = ref<RequestParamsTypeEnum>(RequestParamsTypeEnum.PARAMS)
 
 // 更新参数表格数据
@@ -147,6 +155,10 @@ const updateRequestBodyTable = (paramsObj: RequestParamsObjType) => {
     requestParams.value[RequestParamsTypeEnum.BODY][requestParamsBodyType.value] = paramsObj
   }
 }
+
+onBeforeMount(() => {
+  getDbSource()
+})
 </script>
 
 <style lang="scss" scoped>
