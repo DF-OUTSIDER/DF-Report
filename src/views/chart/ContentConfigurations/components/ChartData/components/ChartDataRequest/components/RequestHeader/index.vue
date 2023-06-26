@@ -77,6 +77,7 @@
         <setting-item-box name="数据库码">
           <n-select
             class="select-time-options"
+            remote="true"
             v-model:value="requestSQLContent['dbCode']"
             :options="selectDbOptions"
             @click="getDbSource"
@@ -115,7 +116,7 @@ let selectDbOptions: { label: any; value: any }[] = []
 const getDbSource = async () => {
   const res = await getDbSourceListApi()
   if (res) {
-      const dbArr = res.data.list
+      const dbArr = res.data
       dbArr.forEach((element) => {
         console.log(element.code)
         if (!selectDbOptions.find((item) => item.value === element.code)) {
@@ -126,6 +127,7 @@ const getDbSource = async () => {
         }
       })
     }
+    return selectDbOptions
 }
 
 const props = defineProps({

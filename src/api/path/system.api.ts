@@ -49,7 +49,7 @@ export const ossUrlApi = async (data: object) => {
 // 获取数据源列表,默认前10条
 export const getDbSourceListApi = async () => {
   try {
-    const res = await http(RequestHttpEnum.GET)(`/dbSource/list`)
+    const res = await http(RequestHttpEnum.GET)(`/dbSource/getDbsources`)
     return res
   } catch (err) {
     httpErrorHandle()
