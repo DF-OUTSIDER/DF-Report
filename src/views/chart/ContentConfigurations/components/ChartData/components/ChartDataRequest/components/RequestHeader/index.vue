@@ -117,7 +117,7 @@ const getDbSource = async () => {
   const res = await getDbSourceListApi()
   if (res) {
       const dbArr = res.data
-      dbArr.forEach((element) => {
+      dbArr.forEach((element: { code: any }) => {
         console.log(element.code)
         if (!selectDbOptions.find((item) => item.value === element.code)) {
           selectDbOptions.push({ 

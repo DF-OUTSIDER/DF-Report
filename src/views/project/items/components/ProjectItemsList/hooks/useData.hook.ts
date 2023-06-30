@@ -37,7 +37,7 @@ export const useDataListInit = () => {
     if (res && res.data) {
       const { data } = res as any // 这里的count与data平级，不在Response结构中
       paginat.count = data.total
-      list.value = res.data.list.map(e => {
+      list.value = res.data.list.map((e: { id: any; name: any; status: any; createTime: any; preview: any; previewAddress: any; createUserId: any }) => {
         // todo preview有效
         const { id, name, status, createTime, preview, previewAddress, createUserId } = e
         return {

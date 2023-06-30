@@ -48,6 +48,7 @@ export const useChartEditStore = defineStore({
     projectInfo: {
       projectId: '',
       projectName: '',
+      preview: '',
       remarks: '',
       thumbnail: '',
       release: false
