@@ -1,3 +1,11 @@
+<!--
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DF-Report\src\views\project\index.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <template>
   <div class="go-project">
     <n-layout has-sider position="absolute">
@@ -27,16 +35,16 @@
 import { ProjectLayoutSider } from './layout/components/ProjectLayoutSider'
 import { LayoutHeaderPro } from '@/layout/components/LayoutHeaderPro'
 import { LayoutTransitionMain } from '@/layout/components/LayoutTransitionMain/index'
-import { goDialog } from '@/utils'
+// import { goDialog } from '@/utils'
 
 // 提示
-goDialog({
-  message: '不要在官方后端上发布任何私密数据，任何人都看得到并进行删除！！！！',
-  isMaskClosable: true,
-  closeNegativeText: true,
-  transformOrigin: 'center',
-  onPositiveCallback: () => {}
-})
+// goDialog({
+//   message: '不要在官方后端上发布任何私密数据，任何人都看得到并进行删除！！！！',
+//   isMaskClosable: true,
+//   closeNegativeText: true,
+//   transformOrigin: 'center',
+//   onPositiveCallback: () => {}
+// })
 </script>
 
 <style lang="scss" scoped>
