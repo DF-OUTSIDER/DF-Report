@@ -7,18 +7,36 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-    <n-data-table
-    :columns="columns"
-    :data="data"
-    :pagination="pagination"
-    :bordered="false"
-  />
+  <n-data-table :columns="columns" :data="data" />
 </template>
 
-<script lang="ts">
-import { h, defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, PropType, reactive, ref, toRefs, watch } from 'vue'
 import { NButton, useMessage } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
+import { CreateComponentType } from '@/packages/index.d'
+
+const message = useMessage()
+
+const props = defineProps({
+  chartConfig: {
+    type: Object as PropType<CreateComponentType>,
+    required: true
+  }
+})
+
+const { w, h } = toRefs(props.chartConfig.attr)
+const { rowNum, unit, color, textColor, borderColor, indexFontSize, leftFontSize, rightFontSize } = toRefs(
+  props.chartConfig.option
+)
+
+const status = reactive({
+  mergedConfig: props.chartConfig.option,
+  rowsData: [],
+  animationIndex: 0,
+  animationHandler: 0,
+  updater: 0
+})
 
 type Song = {
   no: number
@@ -26,61 +44,64 @@ type Song = {
   length: string
 }
 
-const createColumns = ({
-  play
-}: {
-  play: (row: Song) => void
-}): DataTableColumns<Song> => {
-  return [
-    {
-      title: 'No',
-      key: 'no'
-    },
-    {
-      title: 'Title',
-      key: 'title'
-    },
-    {
-      title: 'Length',
-      key: 'length'
-    },
-    {
-      title: 'Action',
-      key: 'actions',
-      render (row) {
-        return h(
-          NButton,
-          {
-            strong: true,
-            tertiary: true,
-            size: 'small',
-            onClick: () => play(row)
-          },
-          { default: () => 'Play' }
-        )
-      }
-    }
-  ]
+const createColumns = () => {
+  let { dataset, rowNum, sort } = status.mergedConfig
+  return dataset.columns
 }
 
-const data: Song[] = [
-  { no: 3, title: 'Wonderwall', length: '4:18' },
-  { no: 4, title: "Don't Look Back in Anger", length: '4:48' },
-  { no: 12, title: 'Champagne Supernova', length: '7:27' }
-]
+const data = ref([])
+const columns =  createColumns()
 
-export default defineComponent({
-  setup () {
-    const message = useMessage()
-    return {
-      data,
-      columns: createColumns({
-        play (row: Song) {
-          message.info(`Play ${row.title}`)
-        }
-      }),
-      pagination: false as const
-    }
+const calcRowsData = () => {
+  let { dataset, rowNum, sort } = status.mergedConfig
+  data.value = dataset.data
+}
+
+const calcData = () => {
+  // mergeConfig()
+  // calcHeaderData()
+  calcRowsData()
+  // calcWidths()
+  // calcHeights()
+  // calcAligns()
+  // animation(true)
+}
+
+const onRestart = async () => {
+  try {
+    if (!status.mergedConfig) return
+    //stopAnimation()
+    calcData()
+
+  } catch (error) {
+    console.log(error)
   }
+}
+
+watch(
+  () => w.value,
+  () => {
+    onRestart()
+  }
+)
+
+watch(
+  () => h.value,
+  () => {
+    onRestart()
+  }
+)
+
+// 数据更新
+watch(
+  () => props.chartConfig.option,
+  () => {
+    onRestart()
+  },
+  { deep: true }
+)
+
+onMounted(() => {
+  onRestart()
 })
 </script>

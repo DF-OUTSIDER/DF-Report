@@ -8,6 +8,6 @@
  */
 import { TableListConfig } from './TableList'
 import { TableScrollBoardConfig } from './TableScrollBoard'
-import { DataTable } from './DataTable'
+import { DataTableConfig } from './DataTable'
 
-export default [TableListConfig, TableScrollBoardConfig, DataTable]
+export default [TableListConfig, TableScrollBoardConfig, DataTableConfig]
