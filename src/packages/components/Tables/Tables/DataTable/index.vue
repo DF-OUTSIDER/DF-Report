@@ -50,7 +50,7 @@ const createColumns = () => {
 }
 
 const data = ref([])
-const columns =  createColumns()
+const columns =  ref(createColumns())
 
 const calcRowsData = () => {
   let { dataset, rowNum, sort } = status.mergedConfig
@@ -60,6 +60,7 @@ const calcRowsData = () => {
 const calcData = () => {
   // mergeConfig()
   // calcHeaderData()
+  columns.value = createColumns()
   calcRowsData()
   // calcWidths()
   // calcHeights()
