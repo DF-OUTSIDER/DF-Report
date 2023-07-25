@@ -1,0 +1,40 @@
+{
+    "columns" : [
+    {
+        "title": "Name",
+        "key": "name"
+    },
+    {
+        "title": "Age",
+        "key": "age"
+    },
+    {
+        "title": "Address",
+        "key": "address"
+    },
+    {
+        "title": "Tags",
+        "key": "tags"
+    }
+    ],
+    "data": [
+    {
+        "key": 0,
+        "name": "07akioni",
+        "age": "18",
+        "address": "Yiheyuan Road"
+    },
+    {
+        "key": 1,
+        "name": "08akioni",
+        "age": "14",
+        "address": "Pingshan Road"
+    },
+    {
+        "key": 2,
+        "name": "09akioni",
+        "age": "22",
+        "address": "Haidian Bridge"
+    }
+]
+}
