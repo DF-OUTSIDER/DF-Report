@@ -1,40 +1,10 @@
 {
-    "columns" : [
-    {
-        "title": "Name",
-        "key": "name"
+    "redis_version": {
+        "label": "Redis版本",
+        "value": "5.0.4"
     },
-    {
-        "title": "Age",
-        "key": "age"
-    },
-    {
-        "title": "Address",
-        "key": "address"
-    },
-    {
-        "title": "Tags",
-        "key": "tags"
+    "tcp_port": {
+        "label": "端口",
+        "value": "6379"
     }
-    ],
-    "data": [
-    {
-        "key": 0,
-        "name": "07akioni",
-        "age": "18",
-        "address": "Yiheyuan Road"
-    },
-    {
-        "key": 1,
-        "name": "08akioni",
-        "age": "14",
-        "address": "Pingshan Road"
-    },
-    {
-        "key": 2,
-        "name": "09akioni",
-        "age": "22",
-        "address": "Haidian Bridge"
-    }
-]
 }
